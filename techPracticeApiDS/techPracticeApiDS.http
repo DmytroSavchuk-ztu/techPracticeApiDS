@@ -1,0 +1,6 @@
+@techPracticeApiDS_HostAddress = http://localhost:5008
+
+GET {{techPracticeApiDS_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
