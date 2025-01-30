@@ -1,31 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using techPracticeApiDS.Models;
+using techPracticeApiDS.Services;
 
 
 namespace techPracticeApiDS.Controllers
 {
     [ApiController]
     [Route("api/users")]
+    [Authorize] // 🔒 Захищаємо доступ
     public class UserController : ControllerBase
     {
-        private static List<User> users = new List<User>
-        {
-            new User { Id = 1, Name = "Alice Johnson", Email = "alice@example.com" },
-            new User { Id = 2, Name = "Bob Smith", Email = "bob@example.com" },
-            new User { Id = 3, Name = "Charlie Davis", Email = "charlie@example.com" }
-        };
-        
+        private static List<User> users = AuthService.Users;
+
+
+        [HttpGet]
+        public IActionResult GetAllUsers() => Ok(users);
+
         [HttpPost]
         public IActionResult CreateUser([FromBody] User user)
         {
             user.Id = users.Count + 1;
             users.Add(user);
             return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
-        }
-
-        [HttpGet]
-        public IActionResult GetAllUsers()
-        {
-            return Ok(users);
         }
 
         [HttpGet("{id:int}")]
@@ -55,12 +52,5 @@ namespace techPracticeApiDS.Controllers
             users.Remove(user);
             return NoContent();
         }
-    }
-
-    public record User
-    {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
     }
 }
