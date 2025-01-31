@@ -2,17 +2,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment() || true) 
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+var usersUrl = "http://localhost:5000/api/users"; 
 
-app.UseHttpsRedirection();
+Console.WriteLine($"отримати користувачів: {usersUrl}");
 
 app.UseAuthorization();
 app.MapControllers(); 
